@@ -6,26 +6,30 @@ const generateToken = async (userId) => {
     expiresIn: process.env.JWT_EXPIRE || '7d'
   });
 
-  // Store session in Redis
+  // Store session in Redis if available
   const redisClient = getRedisClient();
-  const sessionData = {
-    userId,
-    createdAt: new Date().toISOString()
-  };
-  
-  // Set session with expiry (7 days in seconds)
-  await redisClient.setEx(
-    `session:${userId}`,
-    7 * 24 * 60 * 60,
-    JSON.stringify(sessionData)
-  );
+  if (redisClient) {
+    const sessionData = {
+      userId,
+      createdAt: new Date().toISOString()
+    };
+    
+    // Set session with expiry (7 days in seconds)
+    await redisClient.setEx(
+      `session:${userId}`,
+      7 * 24 * 60 * 60,
+      JSON.stringify(sessionData)
+    );
+  }
 
   return token;
 };
 
 const removeToken = async (userId) => {
   const redisClient = getRedisClient();
-  await redisClient.del(`session:${userId}`);
+  if (redisClient) {
+    await redisClient.del(`session:${userId}`);
+  }
 };
 
 module.exports = { generateToken, removeToken };
