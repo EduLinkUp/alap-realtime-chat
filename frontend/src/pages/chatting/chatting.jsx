@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
 import { getConversations, getChatHistory, markMessagesAsRead, searchMessages, getUsers } from '../../services/authService';
 import MessageItem from '../../components/MessageItem';
 import FileUpload from '../../components/FileUpload';
 import EmojiPicker from 'emoji-picker-react';
-import { FaPaperPlane, FaSmile, FaSearch, FaEllipsisV, FaBars, FaTimes, FaPlus, FaUserPlus } from 'react-icons/fa';
+import { FaPaperPlane, FaSmile, FaSearch, FaEllipsisV, FaBars, FaTimes, FaUserPlus } from 'react-icons/fa';
 import './chatting.css';
 
 const Chatting = () => {
@@ -19,7 +19,9 @@ const Chatting = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [typingUsers, setTypingUsers] = useState(new Set());
+  // eslint-disable-next-line no-unused-vars
   const [searchQuery, setSearchQuery] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [isSearching, setIsSearching] = useState(false);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -42,6 +44,7 @@ const Chatting = () => {
     if (showNewChat) {
       loadUsers();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showNewChat, userSearchQuery]);
 
   const loadUsers = async () => {
@@ -138,6 +141,7 @@ const Chatting = () => {
       socket.off('user_stop_typing', handleUserStopTyping);
       socket.off('offline_messages', handleOfflineMessages);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, isConnected, selectedChat]);
 
   const loadConversations = async () => {
